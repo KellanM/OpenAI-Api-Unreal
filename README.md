@@ -14,7 +14,7 @@ The recommended way to install the plugin is to use pre-built binaries.
 
 ## Quick Start
 
-See [Video](https://www.youtube.com/)
+See [Video](https://www.youtube.com/watch?v=i-Aw32rgM-w)
 
 ## Types of Authentication
 There are two ways to set the Api Key
