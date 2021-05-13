@@ -30,18 +30,18 @@ There are two ways to set the Api Key
 ## Blueprint Nodes
 #### OpenAI Call GPT3
 
-- This async node  sends an HTTP request using the `engine`, `prompt`, and `settings` you provide.
+- This async node sends an HTTP request using your `engine`, `prompt`, and `settings`.
 
 ![](https://i.imgur.com/vGo2wta.png)
 > **NOTE**: This node can only be called from a blueprint's `Event Graph`. 
 #### Make Settings
 
-- This node allows you to set the parameters involved in the `Request body`.
+- This node allows you to set the `Request body` parameters.
 
 ![](https://i.imgur.com/xS4MMrI.png)
 > **NOTE**: The extra parameter `Start Sequence` injects text at the beginning of your prompt.
 >
-> `log_probs` and `stream` parameters will be supported soon
+> `log_probs` and `stream` will be supported soon
 #### Break Completion
 
 - This node is used to access the values included in a `completion` or `choice`
