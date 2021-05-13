@@ -1,5 +1,5 @@
 # OpenAI-Api-Unreal
-A plugin that integrates the OpenAI Api in Unreal Engine
+A packaged plug-in that integrates the OpenAI Api in Unreal Engine
 
 This is a community library. No affiliation with OpenAI
 
@@ -10,14 +10,14 @@ See video: (under construction)
 
 ## Install
 
-1. Download the Plugin
+1. Download the Plug-in
 2. Navigate to your project's root directory. Create a new folder named `Plugins` (Skip this step if one already exists.)
 ![](https://i.imgur.com/7mYEjNN.png)
-3. Extract the `OpenAIAPI plugin` into your project's `Plugins` folder
+3. Extract the `OpenAIAPI` plug-in into your project's `Plugins` folder
 4. Open your `.uproject`
-5. From within the editor, navigate to `Edit` -> `Plugins`
+5. From within the editor, navigate to `Edit > Plugins`
 ![](https://i.imgur.com/IMLpdIP.png)
-6. Confirm the `OpenAIAPI` plugin is enabled
+6. Confirm the `OpenAIAPI` plug-in is enabled
 ![](https://i.imgur.com/XyHq9UE.png)
 
 # Types of Authentication
@@ -69,6 +69,9 @@ This node is used to access the values included in a `completion` (Referred to a
 ## Example Usage
 Here is an example implementation of OpenAI's chat preset.
 ![](https://i.imgur.com/DNKp0bW.png)
+
+## Compatability
+This plug-in has been tested with UE4.26
 
 ## Supported Platforms
 Windows, Mac, Android
