@@ -1,5 +1,5 @@
 # OpenAI API Plugin
-The **OpenAIApi Plugin** gives you access to the **OpenAI API** in **Unreal Engine**. It is compatible with 4.26
+The **OpenAIApi Plugin** gives you access to the **OpenAI API** in **Unreal Engine**. It is compatible with 4.25 and 4.26
 
 This is a community Plugin. No affiliation with OpenAI
 
