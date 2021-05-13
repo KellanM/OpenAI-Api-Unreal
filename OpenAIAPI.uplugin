@@ -1,0 +1,28 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "OpenAIAPI",
+	"Description": "Provides easy access to OpenAI's API",
+	"Category": "Other",
+	"CreatedBy": "Kellan Mythen",
+	"CreatedByURL": "",
+	"DocsURL": "https://github.com/KellanM/OpenAI-Api-Unreal/",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"EngineVersion": "4.26.0",
+	"CanContainContent": true,
+	"Installed": true,
+	"Modules": [
+		{
+			"Name": "OpenAIAPI",
+			"Type": "Runtime",
+			"LoadingPhase": "Default",
+			"WhitelistPlatforms": [
+				"Win64",
+				"Mac",
+				"Android"
+			]
+		}
+	]
+}
