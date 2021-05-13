@@ -1,5 +1,5 @@
 # OpenAI API Plugin
-The **OpenAIApi Plugin** gives you access to **OpenAI API** in **Unreal Engine**. It is compatible with 4.26
+The **OpenAIApi Plugin** gives you access to the **OpenAI API** in **Unreal Engine**. It is compatible with 4.26
 
 This is a community Plugin. No affiliation with OpenAI
 
@@ -49,7 +49,7 @@ There are two ways to set the Api Key
 ![](https://i.imgur.com/dydM8Sd.png)
 > **NOTE**: `log_probs` is currently unsupported.
 ## Usage
-This example shows OpenAI's chat preset recreated in blueprint.
+This example shows OpenAI's chat preset recreated in blueprints.
 
 ![](https://i.imgur.com/DNKp0bW.png)
 
