@@ -12,6 +12,10 @@ The recommended way to install the plugin is to use pre-built binaries.
 - Create a `Plugins` folder under your project folder
 - Copy the plugin to it, so you have `YourProject/Plugins/OpenAIAPI`
 
+## Quick Start
+
+See [Video](https://www.youtube.com/)
+
 ## Types of Authentication
 There are two ways to set the Api Key
 - Assign the Api key directly in blueprints.
@@ -49,7 +53,7 @@ There are two ways to set the Api Key
 ![](https://i.imgur.com/dydM8Sd.png)
 > **NOTE**: `log_probs` is currently unsupported.
 ## Usage
-This example shows OpenAI's chat preset recreated in blueprints.
+This example shows OpenAI's chat example implemented in blueprints.
 
 ![](https://i.imgur.com/DNKp0bW.png)
 
