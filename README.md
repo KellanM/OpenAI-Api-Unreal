@@ -14,7 +14,9 @@ The recommended way to install the plugin is to use pre-built binaries.
 
 ## Quick Start
 
-See [Video](https://www.youtube.com/watch?v=i-Aw32rgM-w)
+See [Video](https://www.youtube.com/watch?v=hUv2_gis_9I)
+
+[![](http://img.youtube.com/vi/hUv2_gis_9I/0.jpg)](http://www.youtube.com/watch?v=hUv2_gis_9I "OpenAI API Quick Start Tutorial")
 
 ## Types of Authentication
 There are two ways to set the Api Key
