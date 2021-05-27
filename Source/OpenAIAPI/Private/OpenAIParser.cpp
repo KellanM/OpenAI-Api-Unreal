@@ -40,7 +40,13 @@ FCompletion OpenAIParser::ParseCompletion(const FJsonObject& json)
 	res.text = json.GetStringField(TEXT("text"));
 	res.index = json.GetIntegerField(TEXT("index"));
 	res.finishReason = json.GetStringField(TEXT("finish_reason"));
-	res.logProbs = json.GetStringField()
+	/* still have a bit of work needed in order to get log_props working properly :P
+	
+	
+	TArray<float> logProbsTemp= json.GetArrayField(TEXT("token_logprobs"));
+	//res.logProbs = json.GetArrayField(TEXT("top_logprobs"));
+	
+	*/
 
 	return res;
 }
