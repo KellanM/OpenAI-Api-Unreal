@@ -40,7 +40,7 @@ FCompletion OpenAIParser::ParseCompletion(const FJsonObject& json)
 	res.text = json.GetStringField(TEXT("text"));
 	res.index = json.GetIntegerField(TEXT("index"));
 	res.finishReason = json.GetStringField(TEXT("finish_reason"));
-	//res.logProbs = json.GetStringField()
+	res.logProbs = json.GetStringField()
 
 	return res;
 }
