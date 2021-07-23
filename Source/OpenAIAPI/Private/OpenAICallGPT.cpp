@@ -49,6 +49,9 @@ void UOpenAICallGPT::Activate()
 	} else if (settings.maxTokens <= 0 || settings.maxTokens >= 2048)
 	{
 		Finished.Broadcast({}, TEXT("maxTokens must be within 0 and 2048"), false);
+	}	else if (settings.stopSequences.Num() > 4)
+	{
+		Finished.Broadcast({}, TEXT("You can only include up to 4 Stop Sequences"), false);
 	}
 
 
@@ -102,8 +105,15 @@ void UOpenAICallGPT::Activate()
 		_payloadObject->SetNumberField(TEXT("presence_penalty"), FMath::Clamp(settings.presencePenalty, 0.0f, 1.0f));
 	if (!(settings.frequencyPenalty == 0))
 		_payloadObject->SetNumberField(TEXT("frequency_penalty"), FMath::Clamp(settings.frequencyPenalty, 0.0f, 1.0f));
-	if(!settings.stopSequence.IsEmpty())
-		_payloadObject->SetStringField(TEXT("stop"), settings.stopSequence);
+	if (!(settings.stopSequences.Num() == 0))
+	{
+		TArray<TSharedPtr<FJsonValue>> StopSequences;
+		for (int i = 0; i < settings.stopSequences.Num(); i++)
+		{
+			StopSequences.Add(MakeShareable(new FJsonValueString(settings.stopSequences[i])));
+		}
+		_payloadObject->SetArrayField(TEXT("stop"), StopSequences);
+	}
 
 	// convert payload to string
 	FString _payload;
