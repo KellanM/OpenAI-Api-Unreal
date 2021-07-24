@@ -8,7 +8,7 @@
 #include "HttpModule.h"
 #include "OpenAICallGPT.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnResponseRecievedPin, const TArray<FCompletion>&, completions, const FString&, errorMessage, bool, Success);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnResponseRecievedPin, const TArray<FCompletion>&, completions, const FString&, errorMessage, const FCompletionInfo&, completionInfo, bool, Success);
 
 /**
  * 

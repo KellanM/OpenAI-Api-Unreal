@@ -39,19 +39,19 @@ void UOpenAICallGPT::Activate()
 	// checking parameters are valid
 	if (_apiKey.IsEmpty())
 	{
-		Finished.Broadcast({}, TEXT("Api key is not set"), false);
+		Finished.Broadcast({}, TEXT("Api key is not set"), {}, false);
 	} else if (prompt.IsEmpty())
 	{
-		Finished.Broadcast({}, TEXT("Prompt is empty"), false);
+		Finished.Broadcast({}, TEXT("Prompt is empty"), {}, false);
 	} else if (settings.bestOf < settings.numCompletions)
 	{
-		Finished.Broadcast({}, TEXT("BestOf must be greater than numCompletions"), false);
+		Finished.Broadcast({}, TEXT("BestOf must be greater than numCompletions"), {}, false);
 	} else if (settings.maxTokens <= 0 || settings.maxTokens >= 2048)
 	{
-		Finished.Broadcast({}, TEXT("maxTokens must be within 0 and 2048"), false);
+		Finished.Broadcast({}, TEXT("maxTokens must be within 0 and 2048"), {}, false);
 	}	else if (settings.stopSequences.Num() > 4)
 	{
-		Finished.Broadcast({}, TEXT("You can only include up to 4 Stop Sequences"), false);
+		Finished.Broadcast({}, TEXT("You can only include up to 4 Stop Sequences"), {}, false);
 	}
 
 
@@ -103,6 +103,9 @@ void UOpenAICallGPT::Activate()
 	_payloadObject->SetNumberField(TEXT("best_of"), settings.bestOf);
 	if (!(settings.presencePenalty == 0))
 		_payloadObject->SetNumberField(TEXT("presence_penalty"), FMath::Clamp(settings.presencePenalty, 0.0f, 1.0f));
+	if (!(settings.logprobs == 0))
+		_payloadObject->SetNumberField(TEXT("logprobs"), FMath::Clamp(settings.logprobs, 0, 10));
+		_payloadObject->SetNumberField(TEXT("presence_penalty"), FMath::Clamp(settings.presencePenalty, 0.0f, 1.0f));
 	if (!(settings.frequencyPenalty == 0))
 		_payloadObject->SetNumberField(TEXT("frequency_penalty"), FMath::Clamp(settings.frequencyPenalty, 0.0f, 1.0f));
 	if (!(settings.stopSequences.Num() == 0))
@@ -130,7 +133,7 @@ void UOpenAICallGPT::Activate()
 	}
 	else
 	{
-		Finished.Broadcast({}, ("Error sending request"), false);
+		Finished.Broadcast({}, ("Error sending request"), {}, false);
 	}
 
 
@@ -144,7 +147,7 @@ void UOpenAICallGPT::OnResponse(FHttpRequestPtr Request, FHttpResponsePtr Respon
 		UE_LOG(LogTemp, Warning, TEXT("Error processing request. \n%s \n%s"), *Response->GetContentAsString(), *Response->GetURL());
 		if (Finished.IsBound())
 		{
-			Finished.Broadcast({}, *Response->GetContentAsString(), false);
+			Finished.Broadcast({}, *Response->GetContentAsString(), {}, false);
 		}
 
 		return;
@@ -159,12 +162,13 @@ void UOpenAICallGPT::OnResponse(FHttpRequestPtr Request, FHttpResponsePtr Respon
 		if (err)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("%s"), *Response->GetContentAsString());
-			Finished.Broadcast({}, TEXT("Api error"), false);
+			Finished.Broadcast({}, TEXT("Api error"), {}, false);
 			return;
 		}
-		
+
 		OpenAIParser parser;
 		TArray<FCompletion> _out;
+		FCompletionInfo _info = parser.ParseCompletionInfo(*responseObject);
 
 		auto CompletionsObject = responseObject->GetArrayField(TEXT("Choices"));
 		for (auto& elem : CompletionsObject)
@@ -172,7 +176,8 @@ void UOpenAICallGPT::OnResponse(FHttpRequestPtr Request, FHttpResponsePtr Respon
 			_out.Add(parser.ParseCompletion(*elem->AsObject()));
 		}
 
-		Finished.Broadcast(_out, "", true);
+		Finished.Broadcast(_out, "",  _info, true);
+
 	}
 
 

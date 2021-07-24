@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Misc/DateTime.h"
 #include "OpenAIDefinitions.generated.h"
 
 
@@ -18,6 +19,40 @@ enum class EOAEngineType : uint8
 
 };
 
+
+USTRUCT(BlueprintType)
+struct FCompletionInfo
+{
+	GENERATED_USTRUCT_BODY()
+
+		UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
+			FString id = "Null";
+
+		UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
+			FString object = "Null";
+
+		UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
+			FDateTime created;
+
+		UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
+			FString model = "Null";
+};
+
+USTRUCT(BlueprintType)
+struct FLogProbs
+{
+	GENERATED_USTRUCT_BODY()
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
+		TArray<FString> tokens;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
+		TArray<float> token_logprobs;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
+		TArray<int32> text_offset;
+};
+
 USTRUCT(BlueprintType)
 struct FCompletion
 {
@@ -31,20 +66,22 @@ struct FCompletion
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
 		int32 index = 0;
 
-	/** Currently Unsupported */
+	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
-		int32 logProbs = 0;
+		FLogProbs logProbs;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
 		FString finishReason = "";
 
 };
 
+
+
 class OpenAIValueMapping
 {
 public:
 	OpenAIValueMapping();
-
+	
 	TMap<EOAEngineType, FString> engineTypes;
 };
 
@@ -72,6 +109,10 @@ struct FGPT3Settings
 	/** An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.  */
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
 		float topP = 1.0f;
+
+	/** If logProbs is greater than 0, the model returns tokens, token_logprobs, and the text_offsets for a given completion. (support for top_logprobs will be added soon)*/
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
+		int32 logprobs = 0;
 
 	/** How many completions to generate for each prompt. */
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")

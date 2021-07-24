@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Misc/DateTime.h"
 #include "OpenAIDefinitions.h"
 #include "Dom/JsonObject.h"
 #include "Serialization/JsonReader.h"
@@ -18,4 +19,5 @@ public:
 	~OpenAIParser();
 	TArray<FCompletion> ParseCompletions(FJsonObject);
 	FCompletion ParseCompletion(const FJsonObject&);
+	FCompletionInfo ParseCompletionInfo(const FJsonObject&);
 };
