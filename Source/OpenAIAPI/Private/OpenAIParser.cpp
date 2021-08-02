@@ -3,10 +3,12 @@
 
 #include "OpenAIParser.h"
 
-//Constructor
-OpenAIParser::OpenAIParser()
+// Constructor
+OpenAIParser::OpenAIParser(const FGPT3Settings& promptSettings)
 {
+	settings = promptSettings;
 }
+
 //De-constructor
 OpenAIParser::~OpenAIParser()
 {
@@ -34,7 +36,7 @@ FCompletion OpenAIParser::ParseCompletion(const FJsonObject& json)
 {
 	FCompletion res = {};
 	
-	res.text = json.GetStringField(TEXT("text"));
+	res.text = json.GetStringField(TEXT("text")) + settings.injectRestartText;
 	res.index = json.GetIntegerField(TEXT("index"));
 	res.finishReason = json.GetStringField(TEXT("finish_reason"));
 

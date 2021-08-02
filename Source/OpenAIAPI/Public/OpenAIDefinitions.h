@@ -90,9 +90,17 @@ struct FGPT3Settings
 {
 	GENERATED_BODY()
 
-	/** A sequence that is used at the start of the prompt */
+	/** A sequence that is appended to the start of your prompt */
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
 		FString startSequence = "";
+
+	/** A sequence that is appended at the beginning of your prompt */
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
+		FString injectStartText = "";
+
+	/** A sequence that is appended to the start of your prompt */
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
+		FString injectRestartText = "";
 
 	/** Up to four sequences where the API will stop generating further tokens. The returned text will not contain the stop sequence. */
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")

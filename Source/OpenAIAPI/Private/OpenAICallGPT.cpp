@@ -53,6 +53,10 @@ void UOpenAICallGPT::Activate()
 	{
 		Finished.Broadcast({}, TEXT("You can only include up to 4 Stop Sequences"), {}, false);
 	}
+	else if (settings.stopSequences.Contains(""))
+	{
+		Finished.Broadcast({}, TEXT("One or more Stop Sequences has no value"), {}, false);
+	}
 
 
 
@@ -83,7 +87,7 @@ void UOpenAICallGPT::Activate()
 	}
 
 	// converting parameters to strings
-	FString tempPrompt = settings.startSequence + prompt;
+	FString tempPrompt = settings.startSequence + prompt + settings.injectStartText;
 	FString tempHeader = "Bearer ";
 	tempHeader += _apiKey;
 
@@ -166,7 +170,8 @@ void UOpenAICallGPT::OnResponse(FHttpRequestPtr Request, FHttpResponsePtr Respon
 			return;
 		}
 
-		OpenAIParser parser;
+		OpenAIParser parser(settings);
+		//parser.settings = settings;
 		TArray<FCompletion> _out;
 		FCompletionInfo _info = parser.ParseCompletionInfo(*responseObject);
 
