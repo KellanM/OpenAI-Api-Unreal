@@ -78,12 +78,18 @@ void UOpenAICallGPT::Activate()
 	case EOAEngineType::ADA:
 			apiMethod = "ada";
 	break;
-	case EOAEngineType::DAVINCI_INSTRUCT_BETA:
-		apiMethod = "davinci-instruct-beta";
+	case EOAEngineType::TEXT_DAVINCI_001:
+		apiMethod = "text-davinci-001";
 	break;
-	case EOAEngineType::CURIE_INSTRUCT_BETA:
-		apiMethod = "curie-instruct-beta";
+	case EOAEngineType::TEXT_CURIE_001:
+		apiMethod = "text-curie-001";
 	break;
+	case EOAEngineType::TEXT_BABBAGE_001:
+		apiMethod = "text-babbage-001";
+		break;
+	case EOAEngineType::TEXT_ADA_001:
+		apiMethod = "text-ada-001";
+		break;
 	}
 
 	// converting parameters to strings
