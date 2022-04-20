@@ -78,8 +78,8 @@ void UOpenAICallGPT::Activate()
 	case EOAEngineType::ADA:
 			apiMethod = "ada";
 	break;
-	case EOAEngineType::TEXT_DAVINCI_001:
-		apiMethod = "text-davinci-001";
+	case EOAEngineType::TEXT_DAVINCI_002:
+		apiMethod = "text-davinci-002";
 	break;
 	case EOAEngineType::TEXT_CURIE_001:
 		apiMethod = "text-curie-001";
