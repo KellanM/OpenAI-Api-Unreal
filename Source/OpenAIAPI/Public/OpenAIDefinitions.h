@@ -14,7 +14,7 @@ enum class EOAEngineType : uint8
 	CURIE = 1 UMETA(ToolTip = "Curie is extremely powerful, yet very fast. While Davinci is stronger when it comes to analyzing complicated text, Curie is quite capable for many nuanced tasks like sentiment classification and summarization. Curie is also quite good at answering questions and performing Q&A and as a general service chatbot."),
 	BABBAGE = 2 UMETA(ToolTip = "Babbage can perform straightforward tasks like simple classification. It’s also quite capable when it comes to Semantic Search ranking how well documents match up with search queries."),
 	ADA = 3 UMETA(ToolTip = "Ada is usually the fastest model and can perform tasks like parsing text, address correction and certain kinds of classification tasks that don’t require too much nuance. Ada’s performance can often be improved by providing more context."),
-	TEXT_DAVINCI_002 = 4 UMETA(ToolTip = "Most capable model in the GPT-3 series. Can perform any task the other GPT-3 models can, often with less context."),
+	TEXT_DAVINCI_001 = 4 UMETA(ToolTip = "Most capable model in the GPT-3 series. Can perform any task the other GPT-3 models can, often with less context."),
 	TEXT_CURIE_001 = 5 UMETA(ToolTip = "Very capable, but faster and lower cost than text-davinci-001."),
 	TEXT_BABBAGE_001 = 6 UMETA(ToolTip = "Capable of straightforward tasks, very fast, and lower cost."),
 	TEXT_ADA_001 = 7 UMETA(ToolTip = "Capable of simple tasks, using the fastest model in the GPT-3 series, and lowest cost.")
