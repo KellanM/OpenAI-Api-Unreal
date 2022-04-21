@@ -23,7 +23,7 @@ public:
 	UOpenAICallGPT();
 	~UOpenAICallGPT();
 
-	EOAEngineType engine = EOAEngineType::DAVINCI;
+	EOAEngineType engine = EOAEngineType::TEXT_DAVINCI_002;
 	FString prompt = "";
 	FGPT3Settings settings;
 
