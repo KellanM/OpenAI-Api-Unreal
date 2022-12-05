@@ -5,30 +5,13 @@
 
 // Constructor
 OpenAIParser::OpenAIParser(const FGPT3Settings& promptSettings)
+	: settings(promptSettings)
 {
-	settings = promptSettings;
 }
 
 //De-constructor
 OpenAIParser::~OpenAIParser()
 {
-}
-
-// returns an array of Completions.
-TArray<FCompletion> OpenAIParser::ParseCompletions(FJsonObject json)
-{
-	TArray<FCompletion> Completions;
-
-	if (json.HasField(TEXT("Choices")))
-	{
-		auto CompletionsObject = json.GetArrayField(TEXT("Choices"));
-		for(TSharedPtr<FJsonValue> &elem : CompletionsObject)
-		{
-			FCompletion Completion = ParseCompletion(*elem->AsObject());
-			Completions.Add(Completion);
-		}
-	}
-	return Completions;
 }
 
 // parses a single Completion.
@@ -39,13 +22,10 @@ FCompletion OpenAIParser::ParseCompletion(const FJsonObject& json)
 	res.text = json.GetStringField(TEXT("text")) + settings.injectRestartText;
 	res.index = json.GetIntegerField(TEXT("index"));
 	res.finishReason = json.GetStringField(TEXT("finish_reason"));
-
-
-
+	
 	// parses the completion's log probs
 	if (json.HasField("logprobs"))
 	{
-
 		FLogProbs Logprobs;
 
 		auto LogProbsObject = json.GetObjectField(TEXT("logprobs"));
@@ -87,5 +67,12 @@ FCompletionInfo OpenAIParser::ParseCompletionInfo(const FJsonObject& json)
 	res.model = json.GetStringField("model");
 
 	return res;
+}
+// parses a single Generated Image.
+FString OpenAIParser::ParseGeneratedImage(FJsonObject& json)
+{
+	FString res = "";
+	res = json.GetStringField(TEXT("url"));
 
+	return res;
 }

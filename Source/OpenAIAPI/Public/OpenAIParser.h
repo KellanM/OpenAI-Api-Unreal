@@ -19,9 +19,8 @@ public:
 	~OpenAIParser();
 
 	FGPT3Settings settings;
-
-
-	TArray<FCompletion> ParseCompletions(FJsonObject);
+	
 	FCompletion ParseCompletion(const FJsonObject&);
 	FCompletionInfo ParseCompletionInfo(const FJsonObject&);
+	FString ParseGeneratedImage(FJsonObject&);
 };

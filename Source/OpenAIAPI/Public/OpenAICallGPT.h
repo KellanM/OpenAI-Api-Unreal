@@ -8,7 +8,7 @@
 #include "HttpModule.h"
 #include "OpenAICallGPT.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnResponseRecievedPin, const TArray<FCompletion>&, completions, const FString&, errorMessage, const FCompletionInfo&, completionInfo, bool, Success);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnGptResponseRecievedPin, const TArray<FCompletion>&, completions, const FString&, errorMessage, const FCompletionInfo&, completionInfo, bool, Success);
 
 /**
  * 
@@ -17,7 +17,6 @@ UCLASS()
 class OPENAIAPI_API UOpenAICallGPT : public UBlueprintAsyncActionBase
 {
 	GENERATED_BODY()
-
 
 public:
 	UOpenAICallGPT();
@@ -28,7 +27,7 @@ public:
 	FGPT3Settings settings;
 
 	UPROPERTY(BlueprintAssignable, Category = "OpenAI")
-		FOnResponseRecievedPin Finished;
+		FOnGptResponseRecievedPin Finished;
 
 private:
 	OpenAIValueMapping mapping;

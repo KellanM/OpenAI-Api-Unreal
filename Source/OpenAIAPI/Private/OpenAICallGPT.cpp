@@ -45,23 +45,19 @@ void UOpenAICallGPT::Activate()
 		Finished.Broadcast({}, TEXT("Prompt is empty"), {}, false);
 	} else if (settings.bestOf < settings.numCompletions)
 	{
-		Finished.Broadcast({}, TEXT("BestOf must be greater than numCompletions"), {}, false);
-	} else if (settings.maxTokens <= 0 || settings.maxTokens >= 2048)
+		Finished.Broadcast({}, TEXT("bestOf must be greater than numCompletions"), {}, false);
+	} else if (settings.maxTokens <= 0 || ( engine != EOAEngineType::TEXT_DAVINCI_003 && settings.maxTokens >= 2048) || ( engine == EOAEngineType::TEXT_DAVINCI_003 && settings.maxTokens >= 4000))
 	{
-		Finished.Broadcast({}, TEXT("maxTokens must be within 0 and 2048"), {}, false);
-	}	else if (settings.stopSequences.Num() > 4)
+		Finished.Broadcast({}, TEXT("maxTokens must be within 0 and 2048. Up to 4096 if using davinci-3"), {}, false);
+	} else if (settings.stopSequences.Num() > 4)
 	{
 		Finished.Broadcast({}, TEXT("You can only include up to 4 Stop Sequences"), {}, false);
-	}
-	else if (settings.stopSequences.Contains(""))
+	} else if (settings.stopSequences.Contains(""))
 	{
 		Finished.Broadcast({}, TEXT("One or more Stop Sequences has no value"), {}, false);
 	}
-
-
-
-	auto HttpRequest = FHttpModule::Get().CreateRequest();
 	
+	auto HttpRequest = FHttpModule::Get().CreateRequest();
 	
 	FString apiMethod;
 	switch (engine)
@@ -90,9 +86,12 @@ void UOpenAICallGPT::Activate()
 	case EOAEngineType::TEXT_ADA_001:
 		apiMethod = "text-ada-001";
 		break;
+	case EOAEngineType::TEXT_DAVINCI_003:
+		apiMethod = "text-davinci-003";
+		break;
 	}
 
-	// converting parameters to strings
+	// convert parameters to strings
 	FString tempPrompt = settings.startSequence + prompt + settings.injectStartText;
 	FString tempHeader = "Bearer ";
 	tempHeader += _apiKey;
@@ -145,9 +144,6 @@ void UOpenAICallGPT::Activate()
 	{
 		Finished.Broadcast({}, ("Error sending request"), {}, false);
 	}
-
-
-	
 }
 
 void UOpenAICallGPT::OnResponse(FHttpRequestPtr Request, FHttpResponsePtr Response, bool WasSuccessful)
@@ -177,7 +173,6 @@ void UOpenAICallGPT::OnResponse(FHttpRequestPtr Request, FHttpResponsePtr Respon
 		}
 
 		OpenAIParser parser(settings);
-		//parser.settings = settings;
 		TArray<FCompletion> _out;
 		FCompletionInfo _info = parser.ParseCompletionInfo(*responseObject);
 
@@ -188,9 +183,6 @@ void UOpenAICallGPT::OnResponse(FHttpRequestPtr Request, FHttpResponsePtr Respon
 		}
 
 		Finished.Broadcast(_out, "",  _info, true);
-
 	}
-
-
 }
 
