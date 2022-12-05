@@ -1,5 +1,5 @@
 # OpenAI API Plugin
-The **OpenAIApi Plugin** gives you access to the **OpenAI API** in **Unreal Engine**. It is compatible with 4.25, 4.26, 4.27, and 5.00EA
+The **OpenAIApi Plugin** gives you access to the **OpenAI API** in **Unreal Engine**. It is compatible with 4.26, 4.27, 5.0, and 5.1
 
 This is a community Plugin. No affiliation with OpenAI
 
@@ -58,6 +58,9 @@ There are two ways to set the Api Key
 This example shows OpenAI's chat example implemented in blueprints.
 
 ![](https://i.imgur.com/DNKp0bW.png)
+
+This example shows how you can generate a 1024x1024 image using DALL·E 2 in blueprints.
+![](https://i.imgur.com/CciUUF6.png)
 
 ## References
 - [OpenAI's API Engine Documentation](https://beta.openai.com/docs/engines)
