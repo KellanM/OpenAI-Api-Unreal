@@ -18,6 +18,8 @@ See [Video](https://www.youtube.com/watch?v=hUv2_gis_9I)
 
 [![](http://img.youtube.com/vi/hUv2_gis_9I/0.jpg)](http://www.youtube.com/watch?v=hUv2_gis_9I "OpenAI API Quick Start Tutorial")
 
+> **NOTE**: This video will soon be updated to show you how to generate images in `Unreal Engine` with `DALL·E 2`. 
+
 ## Types of Authentication
 There are two ways to set the Api Key
 - Assign the Api key directly in blueprints.
@@ -60,6 +62,7 @@ This example shows OpenAI's chat example implemented in blueprints.
 ![](https://i.imgur.com/DNKp0bW.png)
 
 This example shows how you can generate a 1024x1024 image using DALL·E 2 in blueprints.
+
 ![](https://i.imgur.com/CciUUF6.png)
 
 ## References
