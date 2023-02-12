@@ -112,9 +112,10 @@ void UOpenAICallGPT::Activate()
 	_payloadObject->SetNumberField(TEXT("best_of"), settings.bestOf);
 	if (!(settings.presencePenalty == 0))
 		_payloadObject->SetNumberField(TEXT("presence_penalty"), FMath::Clamp(settings.presencePenalty, 0.0f, 1.0f));
-	if (!(settings.logprobs == 0))
+	if (!(settings.logprobs == 0)){
 		_payloadObject->SetNumberField(TEXT("logprobs"), FMath::Clamp(settings.logprobs, 0, 10));
 		_payloadObject->SetNumberField(TEXT("presence_penalty"), FMath::Clamp(settings.presencePenalty, 0.0f, 1.0f));
+	}
 	if (!(settings.frequencyPenalty == 0))
 		_payloadObject->SetNumberField(TEXT("frequency_penalty"), FMath::Clamp(settings.frequencyPenalty, 0.0f, 1.0f));
 	if (!(settings.stopSequences.Num() == 0))
