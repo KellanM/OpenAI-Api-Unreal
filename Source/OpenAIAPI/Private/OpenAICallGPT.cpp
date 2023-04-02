@@ -63,7 +63,7 @@ void UOpenAICallGPT::Activate()
 	switch (engine)
 	{
 	case EOAEngineType::DAVINCI:
-			apiMethod = "davinci";
+			apiMethod = "gpt-3.5-turbo";
 	break;
 	case EOAEngineType::CURIE:
 			apiMethod = "curie";
@@ -97,7 +97,7 @@ void UOpenAICallGPT::Activate()
 	tempHeader += _apiKey;
 
 	// set headers
-	FString url = FString::Printf(TEXT("https://api.openai.com/v1/engines/%s/completions"), *apiMethod);
+	FString url = FString::Printf(TEXT("https://api.openai.com/v1/chat/completions"), *apiMethod); //Crude but Lock on davinci and you will use gpt3.5
 	HttpRequest->SetURL(url);
 	HttpRequest->SetHeader(TEXT("Content-Type"), TEXT("application/json"));
 	HttpRequest->SetHeader(TEXT("Authorization"), tempHeader);
