@@ -92,7 +92,7 @@ void UOpenAICallGPT::Activate()
 	}
 
 	// convert parameters to strings
-	FString tempPrompt = settings.startSequence + prompt + settings.injectStartText;
+	FString tempPrompt = [settings.startSequence + prompt + settings.injectStartText];
 	FString tempHeader = "Bearer ";
 	tempHeader += _apiKey;
 
@@ -104,7 +104,8 @@ void UOpenAICallGPT::Activate()
 
 	//build payload
 	TSharedPtr<FJsonObject> _payloadObject = MakeShareable(new FJsonObject());
-	_payloadObject->SetStringField(TEXT("prompt"), tempPrompt);
+	_payloadObject->SetStringField(TEXT("messages"), tempPrompt);
+	_payloadObject->SetStringField(TEXT("model"), apiMethod);
 	_payloadObject->SetNumberField(TEXT("max_tokens"), settings.maxTokens);
 	_payloadObject->SetNumberField(TEXT("temperature"), FMath::Clamp(settings.temperature, 0.0f, 1.0f));
 	_payloadObject->SetNumberField(TEXT("top_p"), FMath::Clamp(settings.topP, 0.0f, 1.0f));
