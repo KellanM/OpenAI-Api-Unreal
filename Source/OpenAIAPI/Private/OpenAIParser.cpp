@@ -1,11 +1,18 @@
-// Copyright Kellan Mythen 2021. All rights Reserved.
-
+// Copyright Kellan Mythen 2023. All rights Reserved.
 
 #include "OpenAIParser.h"
+#include "OpenAIUtils.h"
+#include "Dom/JsonObject.h"
+
 
 // Constructor
-OpenAIParser::OpenAIParser(const FGPT3Settings& promptSettings)
-	: settings(promptSettings)
+OpenAIParser::OpenAIParser(const FGPT3Settings& settings)
+	: completionSettings(settings)
+{
+}
+
+OpenAIParser::OpenAIParser(const FChatSettings& settings)
+	: chatSettings(settings)
 {
 }
 
@@ -15,49 +22,19 @@ OpenAIParser::~OpenAIParser()
 }
 
 // parses a single Completion.
-FCompletion OpenAIParser::ParseCompletion(const FJsonObject& json)
+FCompletion OpenAIParser::ParseCompletionsResponse(const FJsonObject& json)
 {
 	FCompletion res = {};
 	
-	res.text = json.GetStringField(TEXT("text")) + settings.injectRestartText;
+	res.text = json.GetStringField(TEXT("text")) + completionSettings.injectRestartText;
 	res.index = json.GetIntegerField(TEXT("index"));
-	res.finishReason = json.GetStringField(TEXT("finish_reason"));
+	json.TryGetStringField(TEXT("finish_reason"), res.finishReason);
 	
-	// parses the completion's log probs
-	if (json.HasField("logprobs"))
-	{
-		FLogProbs Logprobs;
-
-		auto LogProbsObject = json.GetObjectField(TEXT("logprobs"));
-		auto TokensObject = LogProbsObject->GetArrayField(TEXT("tokens"));
-		for (TSharedPtr<FJsonValue>& elem : TokensObject)
-		{
-			FString token = *elem->AsString();
-			Logprobs.tokens.Add(token);
-		}
-
-		auto TokensLogprobsObject = LogProbsObject->GetArrayField(TEXT("token_logprobs"));
-		for (TSharedPtr<FJsonValue>& elem : TokensLogprobsObject)
-		{
-			float Token_LogProb = elem->AsNumber();
-			Logprobs.token_logprobs.Add(Token_LogProb);
-		}
-
-		auto TextOffsetObject = LogProbsObject->GetArrayField(TEXT("text_offset"));
-		for (TSharedPtr<FJsonValue>& elem : TextOffsetObject)
-		{
-			int32 TextOffset = elem->AsNumber();
-			Logprobs.text_offset.Add(TextOffset);
-		}
-
-		res.logProbs = Logprobs;
-	}
-
 	return res;
 }
 
 // parses the response info
-FCompletionInfo OpenAIParser::ParseCompletionInfo(const FJsonObject& json)
+FCompletionInfo OpenAIParser::ParseGPTCompletionInfo(const FJsonObject& json)
 {
 	FCompletionInfo res = {};
 
@@ -68,6 +45,25 @@ FCompletionInfo OpenAIParser::ParseCompletionInfo(const FJsonObject& json)
 
 	return res;
 }
+
+// parses a single Generated messasge.
+FChatCompletion OpenAIParser::ParseChatCompletion(const FJsonObject& json)
+{
+	FChatCompletion res = {};
+
+	FChatLog message;
+	message.role = EOAChatRole::ASSISTANT;
+	TArray<TSharedPtr<FJsonValue>> choices = json.GetArrayField("choices");
+	TSharedPtr<FJsonValue> choice = choices[0];
+	TSharedPtr<FJsonObject> messageObject = choice->AsObject()->GetObjectField("message");
+	message.content = messageObject->GetStringField("content");
+	res.index = json.GetIntegerField(TEXT("index"));
+	json.TryGetStringField(TEXT("finish_reason"), res.finishReason);
+	res.message = message;
+	
+	return res;
+}
+
 // parses a single Generated Image.
 FString OpenAIParser::ParseGeneratedImage(FJsonObject& json)
 {

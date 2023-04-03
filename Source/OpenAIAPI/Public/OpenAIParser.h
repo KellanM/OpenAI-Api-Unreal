@@ -1,4 +1,4 @@
-// Copyright Kellan Mythen 2021. All rights Reserved.
+// Copyright Kellan Mythen 2023. All rights Reserved.
 
 #pragma once
 
@@ -16,11 +16,15 @@ class OPENAIAPI_API OpenAIParser
 {
 public:
 	OpenAIParser(const FGPT3Settings&);
+	OpenAIParser(const FChatSettings&);
 	~OpenAIParser();
 
-	FGPT3Settings settings;
+	FGPT3Settings completionSettings;
 	
-	FCompletion ParseCompletion(const FJsonObject&);
-	FCompletionInfo ParseCompletionInfo(const FJsonObject&);
+	FChatSettings chatSettings;
+
+	FCompletion ParseCompletionsResponse(const FJsonObject&);
+	FCompletionInfo ParseGPTCompletionInfo(const FJsonObject&);
+	FChatCompletion ParseChatCompletion(const FJsonObject&);
 	FString ParseGeneratedImage(FJsonObject&);
 };

@@ -1,4 +1,4 @@
-// Copyright Kellan Mythen 2021. All rights Reserved.
+// Copyright Kellan Mythen 2023. All rights Reserved.
 
 
 #include "OpenAIUtils.h"
@@ -18,7 +18,7 @@ FString UOpenAIUtils::getApiKey()
 	return mod._apiKey;
 }
 
-void UOpenAIUtils::setUseOpenAIApiKeyFromEnvironmentVars(bool bUseEnvVariable)
+void UOpenAIUtils::	setUseOpenAIApiKeyFromEnvironmentVars(bool bUseEnvVariable)
 {
 	FOpenAIAPIModule& mod = FModuleManager::Get().LoadModuleChecked<FOpenAIAPIModule>("OpenAIAPI");
 	mod._useApiKeyFromEnvVariable = bUseEnvVariable;
@@ -38,7 +38,7 @@ FString UOpenAIUtils::GetEnvironmentVariable(FString key)
 	result = FWindowsPlatformMisc::GetEnvironmentVariable(*key);
 #endif
 #if PLATFORM_MAC
-	result = FApplePlatformMisc::GetEnvironmentVariable(*key);
+	result = FApplePlatformMisc::GetEnvironmentVariable(*key); 
 #endif
 
 #if PLATFORM_LINUX

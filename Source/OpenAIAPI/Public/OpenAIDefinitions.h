@@ -1,4 +1,4 @@
-// Copyright Kellan Mythen 2021. All rights Reserved.
+// Copyright Kellan Mythen 2023. All rights Reserved.
 
 #pragma once
 
@@ -8,7 +8,7 @@
 
 
 UENUM(BlueprintType)
-enum class EOAEngineType : uint8
+enum class EOACompletionsEngineType : uint8
 {
 	DAVINCI = 0 UMETA(ToolTip = "Davinci is the most capable engine and can perform any task the other models can perform and often with less instruction."),
 	CURIE = 1 UMETA(ToolTip = "Curie is extremely powerful, yet very fast. While Davinci is stronger when it comes to analyzing complicated text, Curie is quite capable for many nuanced tasks like sentiment classification and summarization. Curie is also quite good at answering questions and performing Q&A and as a general service chatbot."),
@@ -19,6 +19,23 @@ enum class EOAEngineType : uint8
 	TEXT_BABBAGE_001 = 6 UMETA(ToolTip = "Capable of straightforward tasks, very fast, and lower cost."),
 	TEXT_ADA_001 = 7 UMETA(ToolTip = "Capable of simple tasks, using the fastest model in the GPT-3 series, and lowest cost."),
 	TEXT_DAVINCI_003 = 8 UMETA(ToolTip = "Most capable model in the GPT-3 series. Can perform any task the other GPT-3 models can, often with less context."),
+	GPT_4 = 9 UMETA(ToolTip = "More capable than any GPT-3.5 model, able to do more complex tasks, and optimized for chat. Will be updated with our latest model iteration."),
+};
+
+UENUM(BlueprintType)
+enum class EOAChatEngineType : uint8
+{
+	GPT_3_5_TURBO = 0 UMETA(ToolTip = "More capable than any GPT-3.5 model, able to do more complex tasks, and optimized for chat. Will be updated with our latest model iteration."),
+	GPT_4 = 1 UMETA(ToolTip = "More capable than any GPT-3.5 model, able to do more complex tasks, and optimized for chat. Will be updated with our latest model iteration."),
+	GPT_4_32k = 2 UMETA(ToolTip = "Same capabilities as the base gpt-4 model but with 4x the context length. Will be updated with our latest model iteration."),
+};
+
+UENUM(BlueprintType)
+enum class EOAChatRole : uint8
+{
+	SYSTEM = 0 UMETA(ToolTip = "More capable than any GPT-3.5 model, able to do more complex tasks, and optimized for chat. Will be updated with our latest model iteration."),
+	USER= 1 UMETA(ToolTip = "More capable than any GPT-3.5 model, able to do more complex tasks, and optimized for chat. Will be updated with our latest model iteration."),
+	ASSISTANT = 2 UMETA(ToolTip = "Same capabilities as the base gpt-4 model but with 4x the context length. Will be updated with our latest model iteration."),
 };
 
 UENUM(BlueprintType)
@@ -29,7 +46,19 @@ enum class EOAImageSize : uint8
 	LARGE = 2 UMETA(ToolTip = "Generates 1024x1024 images. This setting takes the longest amount of time to generate images.")
 };
 
-// Structs for GPT3
+// Structs for GPT
+
+USTRUCT(BlueprintType)
+struct FChatLog
+{
+	GENERATED_USTRUCT_BODY()
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
+	EOAChatRole role = EOAChatRole::SYSTEM;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
+	FString content = "";
+};
+
 USTRUCT(BlueprintType)
 struct FCompletionInfo
 {
@@ -46,27 +75,13 @@ struct FCompletionInfo
 
 		UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
 			FString model = "Null";
-};
 
-USTRUCT(BlueprintType)
-struct FLogProbs
-{
-	GENERATED_USTRUCT_BODY()
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
-		TArray<FString> tokens;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
-		TArray<float> token_logprobs;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
-		TArray<int32> text_offset;
 };
 
 USTRUCT(BlueprintType)
 struct FCompletion
 {
-	GENERATED_BODY()
+	GENERATED_USTRUCT_BODY()
 
 	// OpenAI's response.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
@@ -75,14 +90,27 @@ struct FCompletion
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
 		int32 index = 0;
 	
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
-		FLogProbs logProbs;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
 		FString finishReason = "";
-
 };
 
+USTRUCT(BlueprintType)
+struct FChatCompletion
+{
+	GENERATED_USTRUCT_BODY()
+
+	// OpenAI's response.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
+	FChatLog message;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
+	int32 index = 0;
+	
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
+	FString finishReason = "";
+};
 
 
 class OpenAIValueMapping
@@ -90,7 +118,7 @@ class OpenAIValueMapping
 public:
 	OpenAIValueMapping();
 	
-	TMap<EOAEngineType, FString> engineTypes;
+	TMap<EOACompletionsEngineType, FString> engineTypes;
 	TMap<EOAImageSize, FString> imageSizes;
 };
 
@@ -117,11 +145,11 @@ struct FGPT3Settings
 
 	/** The maximum number of tokens to generate. Requests can use up to 2048 tokens shared between prompt and completion. (One token is roughly 4 characters for normal English text) */
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
-		int32 maxTokens = 16;
+		int32 maxTokens = 250;
 
 	/** What sampling temperature to use. Higher values means the model will take more risks. Try 0.9 for more creative applications, and 0 (argmax sampling) for ones with a well-defined answer. */
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
-		float temperature = 1.0f;
+		float temperature = 0.7f;
 
 	/** An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.  */
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
@@ -147,4 +175,22 @@ struct FGPT3Settings
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
 		int32 bestOf = 1;
 
+};
+
+USTRUCT(BlueprintType)
+struct FChatSettings
+{
+	GENERATED_USTRUCT_BODY();
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
+	EOAChatEngineType model = EOAChatEngineType::GPT_4;
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
+	TArray<FChatLog> messages;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
+	float temperature = 1.0f;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
+	int32 maxTokens = 250;
 };
