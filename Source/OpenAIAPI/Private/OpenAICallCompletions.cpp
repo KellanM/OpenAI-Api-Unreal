@@ -21,6 +21,8 @@ UOpenAICallCompletions::~UOpenAICallCompletions()
 UOpenAICallCompletions* UOpenAICallCompletions::OpenAICallCompletions(EOACompletionsEngineType engineInput, FString promptInput, FGPT3Settings settingsInput)
 {
 	UOpenAICallCompletions* BPNode = NewObject<UOpenAICallCompletions>();
+	BPNode->engine = engineInput;
+	BPNode->prompt = promptInput;
 	BPNode->settings = settingsInput;
 	return BPNode;
 }
@@ -86,9 +88,6 @@ void UOpenAICallCompletions::Activate()
 		break;
 	case EOACompletionsEngineType::TEXT_DAVINCI_003:
 		apiMethod = "text-davinci-003";
-		break;
-	case EOACompletionsEngineType::GPT_4:
-		apiMethod = "gpt-4";
 		break;
 	}
 
