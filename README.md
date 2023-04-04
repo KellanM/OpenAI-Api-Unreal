@@ -61,6 +61,10 @@ This example shows OpenAI's chat example implemented in blueprints.
 
 ![](https://i.imgur.com/DNKp0bW.png)
 
+This example show you how to use OpenAI's chat endpoint in blueprints.
+
+![](https://imgur.com/hHFSp4b)
+
 This example shows how you can generate a 1024x1024 image using DALL·E 2 in blueprints.
 
 ![](https://i.imgur.com/CciUUF6.png)
