@@ -16,6 +16,11 @@ OpenAIParser::OpenAIParser(const FChatSettings& settings)
 {
 }
 
+OpenAIParser::OpenAIParser(const FTranscriptionSettings& settings)
+	: transcriptionSettings(settings)
+{
+}
+
 //De-constructor
 OpenAIParser::~OpenAIParser()
 {
@@ -69,6 +74,38 @@ FString OpenAIParser::ParseGeneratedImage(FJsonObject& json)
 {
 	FString res = "";
 	res = json.GetStringField(TEXT("url"));
+
+	return res;
+}
+
+// parses the transcription response info
+FTranscriptionInfo OpenAIParser::ParseTranscriptionResponse(const FJsonObject& json)
+{
+	FTranscriptionInfo res = {};
+	res.language = json.GetStringField("language");
+	res.duration = json.GetNumberField("duration");
+	TArray<TSharedPtr<FJsonValue>> segments = json.GetArrayField("segments");
+	for (auto& segment : segments)
+	{
+		auto& segmentObj = segment->AsObject();
+		FTranscriptionSegment newEl;
+		newEl.id = segmentObj->GetIntegerField("id");
+		newEl.seek = segmentObj->GetIntegerField("seek");
+		newEl.start = segmentObj->GetNumberField("start");
+		newEl.end = segmentObj->GetNumberField("end");
+		newEl.text = segmentObj->GetStringField("text");
+		newEl.temperature = segmentObj->GetNumberField("temperature");
+		newEl.avg_logprob = segmentObj->GetNumberField("avg_logprob");
+		newEl.compression_ratio = segmentObj->GetNumberField("compression_ratio");
+		newEl.no_speech_prob = segmentObj->GetNumberField("no_speech_prob");
+		newEl.transient = segmentObj->GetBoolField("transient");
+		auto tokens = segmentObj->GetArrayField("tokens");
+		for (TSharedPtr<FJsonValue>& token : tokens)
+		{
+			newEl.tokens.Add(token->AsNumber());
+		}
+		res.segments.Add(newEl);
+	}
 
 	return res;
 }

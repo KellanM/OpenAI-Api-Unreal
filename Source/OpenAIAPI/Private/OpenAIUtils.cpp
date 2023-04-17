@@ -47,3 +47,28 @@ FString UOpenAIUtils::GetEnvironmentVariable(FString key)
 	return result;
 }
 
+TArray<uint8> UOpenAIUtils::FStringToUint8(const FString& InString)
+{
+	TArray<uint8> OutBytes;
+
+	// Handle empty strings
+	if (InString.Len() > 0)
+	{
+		FTCHARToUTF8 Converted(*InString); // Convert to UTF8
+		OutBytes.Append(reinterpret_cast<const uint8*>(Converted.Get()), Converted.Length());
+	}
+
+	return OutBytes;
+}
+
+FString UOpenAIUtils::Uint8ToFstring(const TArray<uint8>& InArray)
+{
+	FString OutString;
+	if (!InArray.IsEmpty())
+	{
+		//FString UTF8String(InArray.Num(), reinterpret_cast<const UTF8CHAR*>(InArray.GetData()));
+		FUTF8ToTCHAR Converted(reinterpret_cast<const UTF8CHAR*>(InArray.GetData()), InArray.Num()); // Convert to TCHAR
+		OutString = Converted;
+	}
+	return OutString;
+}

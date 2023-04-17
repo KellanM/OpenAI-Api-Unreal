@@ -69,6 +69,11 @@ This example shows how you can generate a 1024x1024 image using DALL·E 2 in blu
 
 ![](https://i.imgur.com/CciUUF6.png)
 
+This example shows OpenAI's Whisper speech-to-text example implemented in blueprints. You need "Audio Capture" component and "Sound Submix" variable connected to the same asset of "Sound Submix" type in your blueprint to make it worked. 
+
+![](Resources/Whisper_p1.png)
+![](Resources/Whisper_p2.png)
+
 ## References
 - [OpenAI's API Engine Documentation](https://beta.openai.com/docs/engines)
 - [OpenAI's API Reference](https://beta.openai.com/docs/api-reference/completions)

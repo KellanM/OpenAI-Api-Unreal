@@ -17,6 +17,7 @@ OpenAIValueMapping::OpenAIValueMapping()
 	imageSizes.Add(EOAImageSize::SMALL, TEXT("256x256"));
 	imageSizes.Add(EOAImageSize::MEDIUM, TEXT("512x512"));
 	imageSizes.Add(EOAImageSize::LARGE, TEXT("1024x1024"));
+
+	transcriptionEngineTypes.Add(EOATranscriptionEngineType::WHISPER_1, TEXT("whisper-1"));
 	
 }
-

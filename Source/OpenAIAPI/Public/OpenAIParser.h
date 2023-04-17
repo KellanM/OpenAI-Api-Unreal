@@ -17,14 +17,18 @@ class OPENAIAPI_API OpenAIParser
 public:
 	OpenAIParser(const FGPT3Settings&);
 	OpenAIParser(const FChatSettings&);
+	OpenAIParser(const FTranscriptionSettings&);
 	~OpenAIParser();
 
 	FGPT3Settings completionSettings;
 	
 	FChatSettings chatSettings;
 
+	FTranscriptionSettings transcriptionSettings;
+
 	FCompletion ParseCompletionsResponse(const FJsonObject&);
 	FCompletionInfo ParseGPTCompletionInfo(const FJsonObject&);
 	FChatCompletion ParseChatCompletion(const FJsonObject&);
 	FString ParseGeneratedImage(FJsonObject&);
+	FTranscriptionInfo ParseTranscriptionResponse(const FJsonObject&);
 };

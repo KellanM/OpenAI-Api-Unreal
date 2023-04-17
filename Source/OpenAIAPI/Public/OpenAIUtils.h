@@ -45,5 +45,8 @@ public:
 	static bool getUseApiKeyFromEnvironmentVars();
 
 	static FString GetEnvironmentVariable(FString key);
+
+	static TArray<uint8> FStringToUint8(const FString& InString);
+	static FString Uint8ToFstring(const TArray<uint8>& InArray);
 	
 };

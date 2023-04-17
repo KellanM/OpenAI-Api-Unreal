@@ -119,6 +119,7 @@ public:
 	
 	TMap<EOACompletionsEngineType, FString> engineTypes;
 	TMap<EOAImageSize, FString> imageSizes;
+	TMap<EOATranscriptionEngineType, FString> transcriptionEngineTypes;
 };
 
 USTRUCT(BlueprintType)
@@ -192,4 +193,79 @@ struct FChatSettings
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
 	int32 maxTokens = 250;
+};
+
+UENUM(BlueprintType)
+enum class EOATranscriptionEngineType : uint8
+{
+	WHISPER_1 = 0 UMETA(ToolTip = "Only whisper-1 is currently available.")
+};
+
+USTRUCT(BlueprintType)
+struct FTranscriptionSettings
+{
+	GENERATED_BODY()
+
+	/** The sampling temperature, between 0 and 1. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. If set to 0, the model will use log probability to automatically increase the temperature until certain thresholds are hit. */
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
+		float temperature = 0.0f;
+
+	/** The language of the input audio. Supplying the input language in ISO-639-1(https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) format will improve accuracy and latency. */
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
+		FString language = "";
+};
+
+USTRUCT(BlueprintType)
+struct FTranscriptionSegment
+{
+	GENERATED_USTRUCT_BODY()
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
+		int32 id = 0;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
+		int32 seek = 0;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
+		float start = 0.f;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
+		float end = 0.f;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
+		FString text = "Null";
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
+		TArray<int32> tokens;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
+		float temperature = 0.f;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
+		float avg_logprob = 0.f;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
+		float compression_ratio = 0.f;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
+		float no_speech_prob = 0.f;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
+		bool transient = false;
+};
+
+USTRUCT(BlueprintType)
+struct FTranscriptionInfo
+{
+	GENERATED_USTRUCT_BODY()
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
+		FString language = "Null";
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
+		float duration = 0.f;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
+	TArray<FTranscriptionSegment> segments;
+
 };
