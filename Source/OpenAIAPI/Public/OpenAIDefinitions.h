@@ -104,10 +104,6 @@ struct FChatCompletion
 	FChatLog message;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
-	int32 index = 0;
-	
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
 	FString finishReason = "";
 };
 
@@ -122,7 +118,7 @@ public:
 };
 
 USTRUCT(BlueprintType)
-struct FGPT3Settings
+struct FCompletionSettings
 {
 	GENERATED_BODY()
 

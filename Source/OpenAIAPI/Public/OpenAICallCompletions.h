@@ -24,7 +24,7 @@ public:
 
 	EOACompletionsEngineType engine = EOACompletionsEngineType::TEXT_DAVINCI_002;
 	FString prompt = "";
-	FGPT3Settings settings;
+	FCompletionSettings settings;
 
 	UPROPERTY(BlueprintAssignable, Category = "OpenAI")
 		FOnGptResponseRecievedPin Finished;
@@ -33,7 +33,7 @@ private:
 	OpenAIValueMapping mapping;
 
 	UFUNCTION(BlueprintCallable, meta = (BlueprintInternalUseOnly = "true"), Category = "OpenAI")
-		static UOpenAICallCompletions* OpenAICallCompletions(EOACompletionsEngineType engine, FString prompt, FGPT3Settings settings);
+		static UOpenAICallCompletions* OpenAICallCompletions(EOACompletionsEngineType engine, FString prompt, FCompletionSettings settings);
 
 	virtual void Activate() override;
 	void OnResponse(FHttpRequestPtr Request, FHttpResponsePtr Response, bool WasSuccessful);

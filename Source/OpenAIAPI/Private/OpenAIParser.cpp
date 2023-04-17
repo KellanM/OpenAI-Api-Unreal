@@ -6,7 +6,7 @@
 
 
 // Constructor
-OpenAIParser::OpenAIParser(const FGPT3Settings& settings)
+OpenAIParser::OpenAIParser(const FCompletionSettings& settings)
 	: completionSettings(settings)
 {
 }
@@ -57,11 +57,16 @@ FChatCompletion OpenAIParser::ParseChatCompletion(const FJsonObject& json)
 	TSharedPtr<FJsonValue> choice = choices[0];
 	TSharedPtr<FJsonObject> messageObject = choice->AsObject()->GetObjectField("message");
 	message.content = messageObject->GetStringField("content");
-	res.index = json.GetIntegerField(TEXT("index"));
+	//res.index = json.GetIntegerField(TEXT("index"));
 	json.TryGetStringField(TEXT("finish_reason"), res.finishReason);
 	res.message = message;
 	
 	return res;
+}
+
+FString OpenAIParser::ParseTranscriptionCompletion(const FJsonObject& json)
+{
+	return json.GetStringField("text");
 }
 
 // parses a single Generated Image.

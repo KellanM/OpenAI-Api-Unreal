@@ -18,7 +18,7 @@ UOpenAICallCompletions::~UOpenAICallCompletions()
 {
 }
 
-UOpenAICallCompletions* UOpenAICallCompletions::OpenAICallCompletions(EOACompletionsEngineType engineInput, FString promptInput, FGPT3Settings settingsInput)
+UOpenAICallCompletions* UOpenAICallCompletions::OpenAICallCompletions(EOACompletionsEngineType engineInput, FString promptInput, FCompletionSettings settingsInput)
 {
 	UOpenAICallCompletions* BPNode = NewObject<UOpenAICallCompletions>();
 	BPNode->engine = engineInput;

@@ -25,7 +25,7 @@ public:
 	EOAImageSize imageSize = EOAImageSize::LARGE;
 	FString prompt = "";
 	int32 numImages = 1;
-	FGPT3Settings settings;
+	FCompletionSettings settings;
 
 	UPROPERTY(BlueprintAssignable, Category = "OpenAI")
 		FOnDalleResponseRecievedPin Finished;
