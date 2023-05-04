@@ -169,8 +169,9 @@ void UOpenAICallCompletions::OnResponse(FHttpRequestPtr Request, FHttpResponsePt
 
 		if (err)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("%s"), *Response->GetContentAsString());
-			Finished.Broadcast({}, TEXT("Api error"), {}, false);
+			FString ResponseString = Response->GetContentAsString();
+			UE_LOG(LogTemp, Warning, TEXT("%s"), *ResponseString);
+			Finished.Broadcast({}, TEXT("Api error: ") + ResponseString, {}, false);
 			return;
 		}
 
