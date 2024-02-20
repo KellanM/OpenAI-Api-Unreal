@@ -52,6 +52,9 @@ void UOpenAICallChat::Activate()
 		case EOAChatEngineType::GPT_4_32k:
 			apiMethod = "gpt-4-32k";
 			break;
+			case EOAChatEngineType::GPT_4_TURBO:
+				apiMethod = "gpt-4-0125-preview";
+			break;
 		}
 		
 		//TODO: add aditional params to match the ones listed in the curl response in: https://platform.openai.com/docs/api-reference/making-requests

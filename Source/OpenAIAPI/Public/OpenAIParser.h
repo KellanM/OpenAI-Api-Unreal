@@ -18,15 +18,18 @@ public:
 	OpenAIParser();
 	OpenAIParser(const FCompletionSettings&);
 	OpenAIParser(const FChatSettings&);
+	OpenAIParser(const FSpeechSettings&);
 	~OpenAIParser();
 
 	FCompletionSettings completionSettings;
 	
 	FChatSettings chatSettings;
+	FSpeechSettings speechSettings;
 
 	FCompletion ParseCompletionsResponse(const FJsonObject&);
 	FCompletionInfo ParseGPTCompletionInfo(const FJsonObject&);
 	FChatCompletion ParseChatCompletion(const FJsonObject&);
+	FSpeechCompletion ParseSpeechCompletion (const FJsonObject&);
 	FString ParseTranscriptionCompletion(const FJsonObject&);
 	FString ParseGeneratedImage(FJsonObject&);
 };

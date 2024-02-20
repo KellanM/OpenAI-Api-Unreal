@@ -10,7 +10,7 @@
 	"DocsURL": "https://github.com/KellanM/OpenAI-Api-Unreal/",
 	"MarketplaceURL": "",
 	"SupportURL": "",
-	"EngineVersion": "4.26",
+	"EngineVersion": "5.3",
 	"CanContainContent": true,
 	"Installed": true,
 	"Modules": [
