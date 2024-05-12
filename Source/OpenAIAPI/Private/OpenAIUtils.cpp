@@ -47,3 +47,58 @@ FString UOpenAIUtils::GetEnvironmentVariable(FString key)
 	return result;
 }
 
+float UOpenAIUtils::HDVectorDotProductSIMD(const FHighDimensionalVector& A, const FHighDimensionalVector& B)
+{
+	check(A.Components.Num() == B.Components.Num());
+	// To utilize SIMD acceleration, the dimensionality of high-dimensional vectors needs to be a multiple of 4.
+	check(A.Components.Num() % 4 == 0);
+
+	__m128 Sum = _mm_setzero_ps();
+	for (int32 i = 0; i < A.Components.Num(); i += 4)
+	{
+		__m128 AVec = _mm_loadu_ps(&A.Components[i]);
+		__m128 BVec = _mm_loadu_ps(&B.Components[i]);
+		__m128 Mul = _mm_mul_ps(AVec, BVec);
+		Sum = _mm_add_ps(Sum, Mul);
+	}
+
+	float Result[4];
+	_mm_storeu_ps(Result, Sum);
+	return Result[0] + Result[1] + Result[2] + Result[3];
+}
+
+float UOpenAIUtils::HDVectorLengthSIMD(const FHighDimensionalVector& Vector)
+{
+	return FMath::Sqrt(HDVectorDotProductSIMD(Vector, Vector));
+}
+
+float UOpenAIUtils::HDVectorCosineSimilaritySIMD(const FHighDimensionalVector& A, const FHighDimensionalVector& B)
+{
+	float DotProductValue = HDVectorDotProductSIMD(A, B);
+	float LengthProduct = HDVectorLengthSIMD(A) * HDVectorLengthSIMD(B);
+	return DotProductValue / LengthProduct;
+}
+
+float UOpenAIUtils::HDVectorDotProduct(const FHighDimensionalVector& A, const FHighDimensionalVector& B)
+{
+	check(A.Components.Num() == B.Components.Num());
+        
+	float Sum = 0.0f;
+	for (int32 i = 0; i < A.Components.Num(); i++)
+	{
+		Sum += A.Components[i] * B.Components[i];
+	}
+	return Sum;
+}
+
+float UOpenAIUtils::HDVectorLength(const FHighDimensionalVector& Vector)
+{
+	return FMath::Sqrt(HDVectorDotProduct(Vector, Vector));
+}
+
+float UOpenAIUtils::HDVectorCosineSimilarity(const FHighDimensionalVector& A, const FHighDimensionalVector& B)
+{
+	float DotProductValue = HDVectorDotProduct(A, B);
+	float LengthProduct = HDVectorLength(A) * HDVectorLength(B);
+	return DotProductValue / LengthProduct;
+}
