@@ -1,6 +1,7 @@
 // Copyright Kellan Mythen 2023. All rights Reserved.
 
 #include "OpenAICallChat.h"
+#include "OpenAIDefinitions.h"
 #include "OpenAIUtils.h"
 #include "Http.h"
 #include "Dom/JsonObject.h"
@@ -46,6 +47,9 @@ void UOpenAICallChat::Activate()
 		case EOAChatEngineType::GPT_3_5_TURBO:
 			apiMethod = "gpt-3.5-turbo";
 			break;
+		case EOAChatEngineType::GPT_3_5_TURBO_1106:
+			apiMethod = "gpt-3.5-turbo-1106";
+			break;
 		case EOAChatEngineType::GPT_4:
 			apiMethod = "gpt-4";
 			break;
@@ -73,6 +77,14 @@ void UOpenAICallChat::Activate()
 		TSharedPtr<FJsonObject> _payloadObject = MakeShareable(new FJsonObject());
 		_payloadObject->SetStringField(TEXT("model"), apiMethod);
 		_payloadObject->SetNumberField(TEXT("max_tokens"), chatSettings.maxTokens);
+		_payloadObject->SetNumberField(TEXT("seed"), chatSettings.seed);
+
+		if(chatSettings.model == EOAChatEngineType::GPT_3_5_TURBO_1106)
+		{
+			TSharedPtr<FJsonObject> _responseFormatSetting = MakeShareable(new FJsonObject());
+			_responseFormatSetting->SetStringField(TEXT("type"), chatSettings.useJsonFormat?"json_object":"text");
+			_payloadObject->SetObjectField(TEXT("response_format"), _responseFormatSetting);
+		}
 
 		
 		// convert role enum to model string
