@@ -349,3 +349,63 @@ struct FTranslationSettings
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
 	float temperature = 0.0f;
 };
+
+UENUM(BlueprintType)
+enum class EEmbeddingEngineType : uint8
+{
+	TEXT_EMBEDDING_3_SMALL = 0 UMETA(ToolTip = "Our newest and most performant embedding model, optimized for lower costs and higher multilingual performance"),
+	TEXT_EMBEDDING_3_LARGE = 1 UMETA(ToolTip = "Our newest and most performant embedding model, optimized for lower costs and higher multilingual performance"),
+	TEXT_EMBEDDING_ADA_002 = 2 UMETA(ToolTip = "Previous generation model"),
+};
+
+USTRUCT(BlueprintType)
+struct FEmbeddingSettings
+{
+	GENERATED_USTRUCT_BODY();
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
+	EEmbeddingEngineType model = EEmbeddingEngineType::TEXT_EMBEDDING_3_SMALL;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
+	FString input = "";
+};
+
+USTRUCT(BlueprintType)
+struct FHighDimensionalVector
+{
+	GENERATED_USTRUCT_BODY();
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
+	TArray<float> Components;
+
+	FHighDimensionalVector()
+	{
+		Components = TArray<float>(); 
+	};
+	FHighDimensionalVector(int32 Dimension)
+	{
+		Components.SetNumZeroed(Dimension);
+	}
+	FHighDimensionalVector(const TArray<float>& ComponentsArray)
+	{
+		Components = ComponentsArray;
+	}
+};
+
+USTRUCT(BlueprintType)
+struct FEmbeddingResult
+{
+	GENERATED_USTRUCT_BODY();
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
+	FHighDimensionalVector embeddingVector;
+
+	FEmbeddingResult(const TArray<float>& VectorArray)
+	{
+		embeddingVector = FHighDimensionalVector(VectorArray);
+	}
+	FEmbeddingResult()
+	{
+		embeddingVector = FHighDimensionalVector();
+	}
+};
