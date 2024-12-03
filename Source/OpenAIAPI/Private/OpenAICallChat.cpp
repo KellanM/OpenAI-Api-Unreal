@@ -30,14 +30,14 @@ void UOpenAICallChat::Activate()
 		_apiKey = UOpenAIUtils::GetEnvironmentVariable(TEXT("OPENAI_API_KEY"));
 	else
 		_apiKey = UOpenAIUtils::getApiKey();
-	
+
 	// checking parameters are valid
 	if (_apiKey.IsEmpty())
 	{
 		Finished.Broadcast({}, TEXT("Api key is not set"), false);
 	}	else
 	{
-	
+
 		auto HttpRequest = FHttpModule::Get().CreateRequest();
 
 		FString apiMethod;
@@ -49,6 +49,12 @@ void UOpenAICallChat::Activate()
 		case EOAChatEngineType::GPT_4:
 			apiMethod = "gpt-4";
 			break;
+		case EOAChatEngineType::GPT_4o:
+			apiMethod = "gpt-4o";
+			break;
+		case EOAChatEngineType::GPT_4o_mini:
+			apiMethod = "gpt-4o-mini";
+			break;
 		case EOAChatEngineType::GPT_4_32k:
 			apiMethod = "gpt-4-32k";
 			break;
@@ -56,9 +62,9 @@ void UOpenAICallChat::Activate()
 				apiMethod = "gpt-4-0125-preview";
 			break;
 		}
-		
+
 		//TODO: add aditional params to match the ones listed in the curl response in: https://platform.openai.com/docs/api-reference/making-requests
-	
+
 		// convert parameters to strings
 		FString tempHeader = "Bearer ";
 		tempHeader += _apiKey;
@@ -74,7 +80,7 @@ void UOpenAICallChat::Activate()
 		_payloadObject->SetStringField(TEXT("model"), apiMethod);
 		_payloadObject->SetNumberField(TEXT("max_tokens"), chatSettings.maxTokens);
 
-		
+
 		// convert role enum to model string
 		if (!(chatSettings.messages.Num() == 0))
 		{

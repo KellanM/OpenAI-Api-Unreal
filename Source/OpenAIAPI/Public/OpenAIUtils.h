@@ -25,7 +25,7 @@
 #include "OpenAIUtils.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class OPENAIAPI_API UOpenAIUtils : public UBlueprintFunctionLibrary
@@ -36,8 +36,10 @@ class OPENAIAPI_API UOpenAIUtils : public UBlueprintFunctionLibrary
 public:
 	UFUNCTION(BlueprintCallable, Category = "OpenAI")
 	static void setOpenAIApiKey(FString apiKey);
-	
+
 	static FString getApiKey();
+
+	static FString GetVoiceString(EOAOpenAIVoices Voice);
 
 	UFUNCTION(BlueprintCallable, Category = "OpenAI")
 	static void setUseOpenAIApiKeyFromEnvironmentVars(bool bUseEnvVariable);
@@ -45,8 +47,12 @@ public:
 	static bool getUseApiKeyFromEnvironmentVars();
 
 	static FString GetEnvironmentVariable(FString key);
-	
+
 public:
+
+	UFUNCTION(BlueprintCallable, Category = "OpenAI", meta = (DisplayName = "OpenAI Realtime Call"))
+	static UOpenAICallRealtime* OpenAICallRealtime(FString Instructions, FString CreateResponseMessage, EOAOpenAIVoices Voice);
+
 	UFUNCTION(BlueprintCallable, Category = "OpenAI")
 	static float HDVectorDotProductSIMD(const FHighDimensionalVector& A, const FHighDimensionalVector& B);
 
@@ -58,7 +64,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "OpenAI")
 	static float HDVectorDotProduct(const FHighDimensionalVector& A, const FHighDimensionalVector& B);
-	
+
 	UFUNCTION(BlueprintCallable, Category = "OpenAI")
 	static float HDVectorLength(const FHighDimensionalVector& Vector);
 

@@ -6,11 +6,18 @@
 #include "Misc/DateTime.h"
 #include "OpenAIDefinitions.generated.h"
 
+UENUM(BlueprintType)
+enum class EOAOpenAIVoices : uint8
+{
+    ALLOY = 0 UMETA(DisplayName = "Alloy"),
+    ECHO = 1 UMETA(DisplayName = "Echo"),
+    SHIMMER = 2 UMETA(DisplayName = "Shimmer")
+};
 
 UENUM(BlueprintType)
 enum class EOACompletionsEngineType : uint8
 {
-	
+
 	DAVINCI = 0 UMETA(ToolTip = "Davinci is the most capable test engine and can perform any task the other models can perform and often with less instruction."),
 	CURIE = 1 UMETA(ToolTip = "Curie is extremely powerful, yet very fast. While Davinci is stronger when it comes to analyzing complicated text, Curie is quite capable for many nuanced tasks like sentiment classification and summarization. Curie is also quite good at answering questions and performing Q&A and as a general service chatbot."),
 	BABBAGE = 2 UMETA(ToolTip = "Babbage can perform straightforward tasks like simple classification. It�s also quite capable when it comes to Semantic Search ranking how well documents match up with search queries."),
@@ -29,6 +36,8 @@ enum class EOAChatEngineType : uint8
 	GPT_4 = 1 UMETA(ToolTip = "More capable than any GPT-3.5 model, able to do more complex tasks, and optimized for chat. Will be updated with our latest model iteration."),
 	GPT_4_32k = 2 UMETA(ToolTip = "Same capabilities as the base gpt-4 model but with 4x the context length. Will be updated with our latest model iteration."),
 	GPT_4_TURBO = 3 UMETA(ToolTip = "The latest GPT-4 model with improved instruction following, JSON mode, reproducible outputs, parallel function calling, and more. Returns a maximum of 4,096 output tokens. This preview model is not yet suited for production traffic. Learn more."),
+  GPT_4o = 4 UMETA(ToolTip = "GPT-4o Model"),
+	GPT_4o_mini = 5 UMETA(ToolTip = "GPT-4o Mini Model"),
 };
 
 UENUM(BlueprintType)
@@ -74,10 +83,7 @@ enum class EOASpeechVoice : uint8
 {
 	ALLOY = 0 UMETA(ToolTip = "Generates 256x256 images. This settings takes the least amount of time to generate images."),
 	ECHO = 1 UMETA(ToolTip = "Generates 512x512 images. This setting takes a moderate amount of time to generate images."),
-	FABLE = 2 UMETA(ToolTip = "Generates 1024x1024 images. This setting takes the longest amount of time to generate images."),
-	ONYX = 3 UMETA(ToolTip = "Generates 256x256 images. This settings takes the least amount of time to generate images."),
-	NOVA = 4 UMETA(ToolTip = "Generates 512x512 images. This setting takes a moderate amount of time to generate images."),
-	SHIMMER = 5 UMETA(ToolTip = "Generates 1024x1024 images. This setting takes the longest amount of time to generate images.")
+	SHIMMER = 2 UMETA(ToolTip = "Generates 1024x1024 images. This setting takes the longest amount of time to generate images.")
 };
 
 // Structs for GPT
@@ -123,7 +129,7 @@ struct FCompletion
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
 		int32 index = 0;
-	
+
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
 		FString finishReason = "";
@@ -159,7 +165,7 @@ class OpenAIValueMapping
 {
 public:
 	OpenAIValueMapping();
-	
+
 	TMap<EOACompletionsEngineType, FString> engineTypes;
 	TMap<EOAImageSize, FString> imageSizes;
 };
@@ -226,7 +232,7 @@ struct FChatSettings
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
 	EOAChatEngineType model = EOAChatEngineType::GPT_4;
-	
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
 	TArray<FChatLog> messages;
 
@@ -239,7 +245,7 @@ struct FChatSettings
 /*
 *Create speech
 POST
- 
+
 https://api.openai.com/v1/audio/speech
 
 Generates audio from the input text.
@@ -295,7 +301,7 @@ struct FSpeechSettings
 /*
 * Create translation
 POST
- 
+
 https://api.openai.com/v1/audio/translations
 
 Translates audio into English.
@@ -374,13 +380,13 @@ USTRUCT(BlueprintType)
 struct FHighDimensionalVector
 {
 	GENERATED_USTRUCT_BODY();
-	
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "OpenAI")
 	TArray<float> Components;
 
 	FHighDimensionalVector()
 	{
-		Components = TArray<float>(); 
+		Components = TArray<float>();
 	};
 	FHighDimensionalVector(int32 Dimension)
 	{

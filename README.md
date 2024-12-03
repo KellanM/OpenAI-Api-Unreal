@@ -1,5 +1,5 @@
 # OpenAI API Plugin
-The **OpenAIApi Plugin** gives you access to the **OpenAI API** in **Unreal Engine**. It is compatible with 4.26, 4.27, 5.0, 5.1, 5.2, and 5.3
+The **OpenAIApi Plugin** gives you access to the **OpenAI API** in **Unreal Engine**. It is compatible with at least  5.3 and 5.4
 
 This is a community Plugin. No affiliation with OpenAI
 
@@ -72,9 +72,15 @@ This example shows you how to generate a 1024x1024 image using DALL·E 2 in blue
 This example shows you how to record and transcribe speech using Whisper v2-Large in blueprints.
 
 ![](https://i.imgur.com/ameqz1L.png)
+
+## Blueprint for Realtime Voice API using the Runtime Audio Importer plugin
+![image](https://github.com/user-attachments/assets/18564ac6-d333-4566-ae83-1671c1cc2c92)
+
 ## References
 - [OpenAI's API Engine Documentation](https://beta.openai.com/docs/engines)
 - [OpenAI's API Reference](https://beta.openai.com/docs/api-reference/completions)
 
 ## Supported Platforms
-Windows, Mac, Android
+Windows, Mac*, Android*
+
+  *Realtime Voice API mic audio capture has only been tested on Windows
